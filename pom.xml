@@ -21,6 +21,7 @@
     <hikaricp.version>5.0.1</hikaricp.version>
     <mysql.version>8.0.33</mysql.version>
     <lombok.version>1.18.26</lombok.version>
+    <jackson.version>2.15.0</jackson.version>
     <log4j.version>2.20.0</log4j.version>
 
     <junit.version>5.9.2</junit.version>
@@ -67,6 +68,11 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>${lombok.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
