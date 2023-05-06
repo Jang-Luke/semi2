@@ -2,6 +2,7 @@ package kr.co.khacademy.semi2.web.admin.role.add;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.khacademy.semi2.model.Permission;
+import kr.co.khacademy.semi2.model.Role;
 import kr.co.khacademy.semi2.web.admin.role.AdminRoleException;
 import lombok.Builder;
 import lombok.Value;
@@ -51,5 +52,16 @@ public class AdminRoleAddRequest {
         String[] permissions = httpServletRequest.getParameterValues("permissions");
 
         return AdminRoleAddRequest.of(name, permissions);
+    }
+
+    public Role toRole() {
+        String newPermissions = permissions.stream()
+            .map(Permission::getValue)
+            .collect(Collectors.joining(Role.DELIMITER));
+
+        return Role.builder()
+            .name(name)
+            .permissions(newPermissions)
+            .build();
     }
 }
