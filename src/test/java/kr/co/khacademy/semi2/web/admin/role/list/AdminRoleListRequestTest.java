@@ -1,5 +1,6 @@
 package kr.co.khacademy.semi2.web.admin.role.list;
 
+import kr.co.khacademy.semi2.model.Criteria;
 import kr.co.khacademy.semi2.web.admin.role.AdminRoleException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -11,6 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
@@ -153,6 +155,57 @@ class AdminRoleListRequestTest {
         return Stream.of(
             arguments(null, null, null, "12"),
             arguments(null, null, null, "1".repeat(256))
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    @DisplayName("Criteria 변환 성공")
+    @Order(6)
+    public void testConversionToCriteria(AdminRoleListRequest adminRoleListRequest, Criteria expected) {
+        assertThat(adminRoleListRequest.toCriteria()).isEqualTo(expected);
+    }
+
+    public static Stream<Arguments> testConversionToCriteria() {
+        return Stream.of(
+            arguments(
+                AdminRoleListRequest.builder()
+                    .page("1")
+                    .limit("10")
+                    .roleSearchField("name")
+                    .keyword("123")
+                    .build(),
+                Criteria.builder()
+                    .page(1)
+                    .limit(10)
+                    .searchField("name")
+                    .keyword("123")
+                    .build()
+            ),
+            arguments(
+                AdminRoleListRequest.builder()
+                    .page("1")
+                    .limit("10")
+                    .roleSearchField("name")
+                    .keyword("test")
+                    .build(),
+                Criteria.builder()
+                    .page(1)
+                    .limit(10)
+                    .searchField("name")
+                    .keyword("test")
+                    .build()
+            ),
+            arguments(
+                AdminRoleListRequest.builder()
+                    .build(),
+                Criteria.builder()
+                    .page(1)
+                    .limit(10)
+                    .searchField("name")
+                    .keyword("")
+                    .build()
+            )
         );
     }
 }
