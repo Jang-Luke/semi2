@@ -2,8 +2,9 @@ package kr.co.khacademy.semi2.web.admin.role;
 
 import kr.co.khacademy.semi2.common.DataSourceUtils;
 import kr.co.khacademy.semi2.dao.RoleDao;
-import kr.co.khacademy.semi2.model.role.Role;
+import kr.co.khacademy.semi2.model.Role;
 import kr.co.khacademy.semi2.web.admin.role.add.AdminRoleAddRequest;
+import kr.co.khacademy.semi2.web.admin.role.item.AdminRoleItemRequest;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -30,6 +31,16 @@ public final class AdminRoleServiceImpl implements AdminRoleService {
             long id = roleDao.create(role, connection);
             connection.commit();
             return id;
+        } catch (SQLException e) {
+            throw new AdminRoleException(e);
+        }
+    }
+
+    @Override
+    public Role getItem(AdminRoleItemRequest adminRoleItemRequest) {
+        try (Connection connection = DataSourceUtils.getConnection()) {
+            long id = adminRoleItemRequest.getId();
+            return roleDao.read(id, connection);
         } catch (SQLException e) {
             throw new AdminRoleException(e);
         }
