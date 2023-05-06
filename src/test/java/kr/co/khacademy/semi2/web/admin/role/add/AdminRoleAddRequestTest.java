@@ -1,5 +1,6 @@
 package kr.co.khacademy.semi2.web.admin.role.add;
 
+import kr.co.khacademy.semi2.model.Role;
 import kr.co.khacademy.semi2.web.admin.role.AdminRoleException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
@@ -10,6 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -103,6 +105,39 @@ class AdminRoleAddRequestTest {
             arguments("1234", new String[]{"aadmin-page"}),
             arguments("1234", new String[]{"admin-pagee"}),
             arguments("1234", new String[]{"admin-page", "userr"})
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    @DisplayName("Role 변환 성공")
+    @Order(5)
+    public void testConversionToRole(AdminRoleAddRequest adminRoleAddRequest, Role expected) {
+        assertThat(adminRoleAddRequest.toRole()).isEqualTo(expected);
+    }
+
+    public static Stream<Arguments> testConversionToRole() {
+        return Stream.of(
+            arguments(
+                AdminRoleAddRequest.builder()
+                    .name("1234")
+                    .permissions(new String[]{"admin-page"})
+                    .build(),
+                Role.builder()
+                    .name("1234")
+                    .permissions("admin-page")
+                    .build()
+            ),
+            arguments(
+                AdminRoleAddRequest.builder()
+                    .name("1234")
+                    .permissions(new String[]{"admin-page", "user"})
+                    .build(),
+                Role.builder()
+                    .name("1234")
+                    .permissions("admin-page:user")
+                    .build()
+            )
         );
     }
 }
