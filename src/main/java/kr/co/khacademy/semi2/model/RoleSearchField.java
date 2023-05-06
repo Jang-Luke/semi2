@@ -10,9 +10,10 @@ import java.util.Optional;
 @Getter
 public enum RoleSearchField {
 
-    NAME("name");
+    NAME("name", "name");
 
     private final String value;
+    private final String column;
 
     public static Optional<RoleSearchField> of(String value) {
         return Arrays.stream(values())

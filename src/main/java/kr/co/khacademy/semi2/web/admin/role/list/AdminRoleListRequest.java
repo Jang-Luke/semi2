@@ -1,6 +1,7 @@
 package kr.co.khacademy.semi2.web.admin.role.list;
 
 import jakarta.servlet.http.HttpServletRequest;
+import kr.co.khacademy.semi2.model.Criteria;
 import kr.co.khacademy.semi2.model.RoleSearchField;
 import kr.co.khacademy.semi2.web.admin.role.AdminRoleException;
 import lombok.Builder;
@@ -97,5 +98,14 @@ public class AdminRoleListRequest {
             searchField,
             keyword
         );
+    }
+
+    public Criteria toCriteria() {
+        return Criteria.builder()
+            .page(page)
+            .limit(limit)
+            .searchField(roleSearchField.getColumn())
+            .keyword(keyword)
+            .build();
     }
 }
